@@ -1,0 +1,19 @@
+﻿@model List<ChatPath.Entity.Channel>
+
+	@{
+	foreach (var item in Model)
+	{
+		string fileName = "channel" + item.AvatarFileName + ".png";
+		string search = item.ChannelName + " " + item.ChannelDescription;
+		<div class="channelCell" data-chn="@item.ChannelID" data-nm="@item.ChannelName" data-search="@search">
+			<div class="channelLeft">
+				<div class="channelAvatar" style="background-image: url('../img/channels/@fileName');"></div>
+			</div>
+			<div class="channelRight">
+				<div class="channelName">@item.ChannelName</div>
+				<div class="channelDescription">@item.ChannelDescription</div>
+			</div>
+			<i class="fas fa-sign-in-alt joinChannelBtn" title="Katıl" onclick="joinChannel(this)"></i>
+		</div>
+	}
+}

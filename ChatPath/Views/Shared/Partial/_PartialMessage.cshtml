@@ -1,0 +1,27 @@
+﻿@model List<ChatPath.Entity.Message>
+
+	@{
+	foreach (var item in Model)
+	{
+		<div class="inComing">
+			<div class="bubble">
+				<div class="nick">@item.NickName</div>
+				<div class="msg_text">@item.MessageText</div>
+				<div class="msg_time">@item.Date.ToString("HH:mm")</div>
+				@if (item.Date.Date != DateTime.Now.Date)
+				{
+					<div class="msg_date">@item.Date.ToString("dd.MM.yyyy")</div>
+				}
+			</div>
+		</div>
+
+	}
+}
+
+@*<div class="outGoing">
+	<div class="bubble">
+	<div class="msg_text">Merhaba Lütfiye!</div>
+	<div class="msg_time">20:13</div>
+	<div class="msg_date">27.12.2021</div>
+	</div>
+	</div>*@

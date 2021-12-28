@@ -1,0 +1,45 @@
+﻿@{
+	ViewData["Title"] = "Chat Path";
+}
+
+<div class="row mainContent fullHeight">
+	<div class="col-8 p-0 leftSide">
+		<div id="preView" class="centerDiv">
+			<img id="leftBg" src="~/img/join-channel2.jpg" />
+			<h3>Chat Path'e Hoş Geldiniz</h3>
+			<div class="border_div"></div>
+			<h5>Bir kanal seçin ve sohbet etmeye başlayın</h5>
+		</div>
+		<div id="messages" style="display:none;">
+			<div id="channelInfo">
+				<div id="msgChannelAvatar"></div>
+				<div id="msgChannelName"></div>
+				<i id="exitChannelBtn" class="fas fa-sign-out-alt" title="Kanaldan Çık" onclick="exitChannel()"></i>
+			</div>
+			<div id="msgTexts">
+			</div>
+			<div id="msgBox">
+				<div class="msgBoxLeft">
+					<input type="text" id="msgTextInput" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="400"/>
+				</div>
+				<div class="msgBoxRight">
+					<i id="sendMsg" class="fab fa-telegram-plane" title="Gönder"></i>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-4 p-0 rightSide">
+		<div class="channelHeader">
+			<div id="nickInfo">
+				<div id="nickAvatar">S</div>
+				<div id="nickNameInfo">Selahattin</div>
+				<i id="renameNickBtn" class="fas fa-edit" title="Nickname değiştir" onclick="changeNickname()"></i>
+			</div>
+			<input type="text" id="txtSearchChannel" placeholder="Bir kanal aratın.." />
+			<i id="searchBtn" class="fas fa-search" title="Ara" onclick="searchChannel()"></i>
+		</div>
+		<div id="channelContent">
+			<partial name="~/Views/Shared/Partial/_PartialChannel.cshtml" model="@ViewBag.Channels"/>
+		</div>
+	</div>
+</div>
