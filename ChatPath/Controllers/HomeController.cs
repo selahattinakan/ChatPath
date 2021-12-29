@@ -23,6 +23,9 @@ namespace ChatPath.Controllers
         /*Selahattin Akan*/
         public IActionResult Index()
         {
+            //List<string> messages = new List<string>();
+            //var at = messages[2];
+
             //InsertTestData();
             ChatModel model = new();
             ViewBag.Channels=model.GetChannels();
@@ -40,6 +43,7 @@ namespace ChatPath.Controllers
             Encryption enc = new();
             for (int i = 0; i < messages.Count; i++)
             {
+                //mesajlar db'den şifrelenmiş olarak geldi, şifreler çözüldükten sonra partialview'a render etmesi için gönderildi
                 messages[i].MessageText = enc.DecryptText(messages[i].MessageText);
             }
             return PartialView("~/Views/Shared/Partial/_PartialMessage.cshtml", messages);
@@ -51,6 +55,9 @@ namespace ChatPath.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        /// <summary>
+        /// Test mesaj verilerini veritabanına kaydeder.
+        /// </summary>
         private void InsertTestData()
         {
             ChatModel model = new();
@@ -82,7 +89,7 @@ namespace ChatPath.Controllers
                     System.Threading.Thread.Sleep(1000);
                     if (model.InsertMessage(tmp) == 1)
                     {
-                        Console.WriteLine(tmp.NickName + " : " + tmp.MessageText);
+                        Console.WriteLine($"{tmp.NickName} : {tmp.MessageText}");
                     }
                     else
                     {

@@ -6,7 +6,7 @@ namespace ChatPath.Helper
 {
     public class Encryption
     {
-        private static readonly string Key = "BuBirAnahtarDegildir";
+        private const string Key = "BuBirAnahtarDegildir";
 
         public string EncryptText(string data)
         {

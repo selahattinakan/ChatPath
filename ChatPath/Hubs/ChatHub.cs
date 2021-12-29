@@ -1,4 +1,5 @@
-﻿using ChatPath.Entity;
+﻿
+using ChatPath.Entity;
 using ChatPath.Models;
 using ChatPath.Helper;
 using Microsoft.AspNetCore.SignalR;
@@ -23,19 +24,22 @@ namespace ChatPath.Hubs
 
         public void SendMsg(string channel, string nickName, string msg)
         {
-            ChatModel model = new();
-            Channel chnl = model.GetChannelByName(channel);
-            Encryption enc = new();
-            int result = model.InsertMessage(new Message
-            {
-                ChannelID = chnl.ChannelID,
-                NickName = nickName,
-                Date = System.DateTime.Now,
-                IsDeleted = false,
-                MessageText = enc.EncryptText(msg)
-            });
             try
             {
+                ChatModel model = new();
+                Channel chnl = model.GetChannelByName(channel);
+                Encryption enc = new();
+                //Mesaj encrypt edildikten sonra db'ye kayıt
+                int result = model.InsertMessage(new Message
+                {
+                    ChannelID = chnl.ChannelID,
+                    NickName = nickName,
+                    Date = DateTime.Now,
+                    IsDeleted = false,
+                    MessageText = enc.EncryptText(msg)
+                });
+
+                // mesajı redis ile iletme
                 using var connection = Redis.get();
                 var sub = connection.GetSubscriber();
                 var protocol = new JsonHubProtocol();
@@ -43,9 +47,17 @@ namespace ChatPath.Hubs
                 var bytes = redisProtocol.WriteInvocation("ReceiveMsg", new[] { channel, nickName, msg });
                 sub.Publish($"ChatPath.Hubs.ChatHub:group:{channel}", bytes);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-
+                try
+                {   
+                    //redis ile iletme esnasında hata alınırsa, sıradan signalR metoduyla mesaj iletme 
+                    Clients.Group(channel).SendAsync("ReceiveMsg", channel, nickName, msg);
+                }
+                catch (Exception)
+                {
+                    Clients.Group(channel).SendAsync("ErrorMsg", "");
+                }
             }
             //if (result == 1)
             //{

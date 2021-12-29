@@ -10,6 +10,9 @@ namespace ChatPath.Models
 {
     public class ChatModel
     {
+        /*
+         ORM olarak Dapper kullanıldı, database layer;
+         */
         public List<Channel> GetChannels()
         {
             using var connection = Sql.get();

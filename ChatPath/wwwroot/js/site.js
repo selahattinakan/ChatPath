@@ -37,6 +37,7 @@ function plsWait() {
 }
 
 $(function () {
+
     $("#txtSearchChannel").on("keyup", function () {
         var value = $(this).val().toLowerCase();
         if (!!value) {

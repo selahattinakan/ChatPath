@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,7 +15,7 @@ namespace ChatPath
 {
     public class Startup
     {
-        public const string redisServer = "127.0.0.1:6379";
+       
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -25,7 +27,7 @@ namespace ChatPath
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddSignalR().AddRedis(redisServer);
+            services.AddSignalR().AddRedis(Redis.redisServer);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,6 +57,14 @@ namespace ChatPath
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            //app.UseExceptionHandler(a => a.Run(async context =>
+            //{
+            //    var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
+            //    var exception = exceptionHandlerPathFeature.Error;
+
+            //    await context.Response.WriteAsJsonAsync(new { error = exception.Message });
+            //}));
         }
     }
 }
