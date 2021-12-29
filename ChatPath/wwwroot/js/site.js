@@ -11,7 +11,7 @@ function plsWait() {
         logo: "../img/loading2.gif",
         backgroundColor: '#f2f2f2',
         loadingHtml: "<p class='loading-message' style='display:none;'></p>"
-            + "<input type='text' id='nickNameInput' placeholder='Nickname Giriniz' maxlength='50' autocomplete='off' autocorrect='off' autocapitalize='off' spellcheck='false' /><div style='clear:both;margin:15px;'></div>"
+            + "<input type='text' id='nickNameInput' placeholder='Nickname Giriniz' onkeypress='nickKeyPress(event)' maxlength='50' autocomplete='off' autocorrect='off' autocapitalize='off' spellcheck='false' /><div style='clear:both;margin:15px;'></div>"
             + "<button type='button' id='nickNameBtn' onclick='signIn()'class='btn btn-primary'>Sohbete Başla</button>"
         //+ '<div class="hero-left-shape">&nbsp;</div>'
         //+ '<img class="hr-rec hr-rec-4" src="https://path.com.tr/assets/images/hero-rec-circle-2.svg" alt="">'
@@ -67,14 +67,22 @@ $(function () {
         }
     });
 
-    $('#nickNameInput').keypress(function (e) {
-        var key = e.which;
-        if (key == 13) {
-            signIn();
-            return false;
-        }
-    });
+    //$('#nickNameInput').keypress(function (e) {
+    //    var key = e.which;
+    //    if (key == 13) {
+    //        signIn();
+    //        return false;
+    //    }
+    //});
 });
+
+function nickKeyPress(e) {
+    var key = e.which;
+    if (key == 13) {
+        signIn();
+        return false;
+    }
+}
 
 function renderNickname(_nick) {
     try {
