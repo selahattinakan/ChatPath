@@ -23,9 +23,6 @@ namespace ChatPath.Controllers
         /*Selahattin Akan*/
         public IActionResult Index()
         {
-            //List<string> messages = new List<string>();
-            //var at = messages[2];
-
             //InsertTestData();
             ChatModel model = new();
             ViewBag.Channels=model.GetChannels();

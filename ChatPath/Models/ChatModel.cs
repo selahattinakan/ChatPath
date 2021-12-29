@@ -2,6 +2,7 @@
 using Dapper;
 using Microsoft.AspNetCore.SignalR.Protocol;
 using Microsoft.AspNetCore.SignalR.Redis.Internal;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,11 +40,20 @@ namespace ChatPath.Models
 
         public int InsertMessage(Message message)
         {
-            using var connection = Sql.get();
-            string query = @"INSERT INTO Message (ChannelID, NickName, MessageText, Date, IsDeleted) 
+            try
+            {
+                using var connection = Sql.get();
+                string query = @"INSERT INTO Message (ChannelID, NickName, MessageText, Date, IsDeleted) 
                              VALUES (@ChannelID, @NickName, @MessageText, @Date, @IsDeleted)";
-            int result = connection.Execute(query, new { ChannelID = message.ChannelID, NickName = message.NickName, MessageText = message.MessageText, Date = message.Date, IsDeleted = message.IsDeleted });
-            return result;
+                int result = connection.Execute(query, new { ChannelID = message.ChannelID, NickName = message.NickName, MessageText = message.MessageText, Date = message.Date, IsDeleted = message.IsDeleted });
+                return result;
+            }
+            catch(Exception ex)
+            {
+                Log.Fatal(ex, "[ChatModel](InsertMessage)Mesaj eklenirken bir hata oluştu!");
+                return -1;
+            }
+       
         }
     }
 }

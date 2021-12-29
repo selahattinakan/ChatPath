@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.SignalR.Protocol;
 using Microsoft.AspNetCore.SignalR.Redis.Internal;
 using System.Collections.Generic;
 using System;
+using Serilog;
 
 namespace ChatPath.Hubs
 {
@@ -47,8 +48,9 @@ namespace ChatPath.Hubs
                 var bytes = redisProtocol.WriteInvocation("ReceiveMsg", new[] { channel, nickName, msg });
                 sub.Publish($"ChatPath.Hubs.ChatHub:group:{channel}", bytes);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Log.Fatal(ex, $"[ChatHub]Mesaj gönderilirken bir hata oluştu");
                 try
                 {   
                     //redis ile iletme esnasında hata alınırsa, sıradan signalR metoduyla mesaj iletme 
